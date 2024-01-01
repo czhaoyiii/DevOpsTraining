@@ -30,7 +30,7 @@ STATIC_DIR="./client"
 PUBLISHABLE_KEY=""
 SECRET_KEY=""
 ```
-Publishable and secret keys can be left empty as practice.
+Publishable and secret keys can be left empty for practice.
 
 2. Initialise and start the project
 ```
