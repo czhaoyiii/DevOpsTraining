@@ -1,4 +1,4 @@
-## 2nd Project (Creating an E2 Instance using Terraform)
+## 2nd Project (Creating 3 EC2 Instances using Terraform)
 ### Configurations:
 1. Install Chocolatey on Windows
    
@@ -10,6 +10,16 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 ```
 choco install terraform
 ```
+3. Setting up AWS CLI
+```
+ aws configure
+```
+```
+ AWS Access Key ID [*************xxxx]: <Your AWS Access Key ID>
+ AWS Secret Access Key [**************xxxx]: <Your AWS Secret Access Key>
+ Default region name: [us-east-1]: us-east-1
+ Default output format [None]:
+```
 
 ### Deployments:
 1. Create and set up the terraform file (main.tf)
@@ -17,30 +27,57 @@ choco install terraform
 vim main.tf
 ```
 ```
-DOMAIN= "http://localhost:3000"
-PORT=3000
-STATIC_DIR="./client"
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.16"
+    }
+  }
 
-PUBLISHABLE_KEY=""
-SECRET_KEY=""
+  required_version = ">= 1.2.0"
+}
+
+provider "aws" {
+  region  = "us-east-1"
+}
+
+resource "aws_instance" "app_server" {
+  ami           = "ami-0c7217cdde317cfec"
+  instance_type = "t2.micro"
+  count = 1
+
+  tags = {
+    Name = "Server"
+  }
+}
+
+resource "aws_instance" "app_client" {
+  ami           = "ami-0c7217cdde317cfec"
+  instance_type = "t2.micro"
+  count = 2
+
+  tags = {
+    Name = "Client"
+  }
+}
 ```
-Publishable and secret keys can be left empty for practice.
-
-2. Initialise and start the project
+2. Initialize the Terraform configuration
 ```
-npm install
-npm start run
+terraform init
 ```
-3. Edit inbound rule in the security group of EC2 to allow traffic.
-   
-   EC2 > Security Groups > security group id of EC2 > Edit inbound rule > Add rule.
-
-   **Type** = Custom TCP, **Port** = 3000, **Source** = Custom 0.0.0.0/0
-<br>
-Last but not least, from any local machine enter the IP address of the EC2 Instance and port number to access the application.
-
-Example: 50.75.100.125:3000
+3. Create the Terraform plan
+```
+terraform plan
+```
+4. Execute the Terraform plan
+```
+terraform apply
+```
 
 ---
 Reference:
-https://github.com/verma-kunal/AWS-Session
+
+https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+
+https://registry.terraform.io/providers/hashicorp/aws/latest/docs
