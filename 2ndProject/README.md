@@ -61,6 +61,10 @@ resource "aws_instance" "app_client" {
     Name = "Client"
   }
 }
+
+resource "aws_s3_bucket" "terraform_state" {
+  bucket = "zhaoyiii-terraform-states"
+}
 ```
 2. Initialize the Terraform configuration
 ```
@@ -74,6 +78,30 @@ terraform plan
 ```
 terraform apply
 ```
+5. Create the backend file
+```
+vim backend.tf
+```
+```
+terraform {
+  backend "s3" {
+    bucket = "zhaoyiii-terraform-states"
+    region = "us-east-1"
+    key = "brandon/terraform.tfstate"
+  }
+}
+```
+6. Reinitialise, Plan and Apply Terraform again
+```
+terraform init
+terraform plan
+terraform apply
+```
+7. Delete the tfstate in the directory
+
+Now we are able launch multiple instances while storing the logs (.tfstate) in AWS S3.
+
+Wanted to implement a lock system, dynamodb but it is a paid service. :(
 
 ---
 Reference:
@@ -81,3 +109,5 @@ Reference:
 https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
 
 https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+
+https://github.com/ozbillwang/terraform-best-practices
