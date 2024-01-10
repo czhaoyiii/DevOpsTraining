@@ -46,6 +46,7 @@ resource "aws_instance" "app_server" {
   ami           = "ami-0c7217cdde317cfec"
   instance_type = "t2.micro"
   count = 1
+  key_name = "Server_Key"
 
   tags = {
     Name = "Server"
@@ -56,6 +57,7 @@ resource "aws_instance" "app_client" {
   ami           = "ami-0c7217cdde317cfec"
   instance_type = "t2.micro"
   count = 2
+  key_name = "Client_Key"
 
   tags = {
     Name = "Client"
