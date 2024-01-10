@@ -16,8 +16,23 @@ provider "aws" {
 resource "aws_instance" "app_server" {
   ami           = "ami-0c7217cdde317cfec"
   instance_type = "t2.micro"
+  count = 1
 
   tags = {
-    Name = "Terraform_Demo"
+    Name = "Server"
   }
+}
+
+resource "aws_instance" "app_client" {
+  ami           = "ami-0c7217cdde317cfec"
+  instance_type = "t2.micro"
+  count = 2
+
+  tags = {
+    Name = "Client"
+  }
+}
+
+resource "aws_s3_bucket" "terraform_state" {
+  bucket = "zhaoyiii-terraform-states"
 }
