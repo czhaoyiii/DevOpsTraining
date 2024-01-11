@@ -50,7 +50,7 @@ vim inventory
 172.31.91.245
 172.31.83.9
 ```
-2. In the Server instance, using Ansible Adhoc Commands. create a simple file named "testing"
+2. In the Server instance, using Ansible Adhoc Commands, create a simple file named "testing"
 ```
 ansible -i inventory all -m "shell" -a "touch testing"
 ```
@@ -61,4 +61,30 @@ Both my Client instances have a file named testing.
 vim InS_nginx.yml
 ```
 ```
+--- 
+- name: Install and Start Nginx
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+    - name: Start Nginx
+      service:
+        name: nginx
+        state: started
 ```
+I won't explain much on yaml file, pretty straightforward.
+
+4. Run the ansible playbook command
+```
+ansible-playbook -i inventory InS_nginx.yml
+```
+5. Nginx have been installed and started on all clients in the inventory
+```
+# In client Instance, you can check using
+sudo systemctl status nginx 
+```
+This is a simple Ansible Adhoc Command + playbook, I will update once I've learnt Dynamic Inventory and more complicated tasks that DevOps faces regularly but in other projects.
