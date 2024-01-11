@@ -62,7 +62,7 @@ resource "aws_security_group" "Terraform_SG" {
 
 # Inbound rule: Access port 443 from any IP
   ingress {
-    description      = "HTTP"
+    description      = "HTTPS"
     from_port        = 443
     to_port          = 443
     protocol         = "tcp"
