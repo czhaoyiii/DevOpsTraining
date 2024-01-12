@@ -2,7 +2,7 @@
 DevOps Training
 
 ---
-Project #1: Taught me how to deploy Node.js application online
+Project #1 (AWS): Taught me how to deploy Node.js application online
 
 Project #2 (Terraform): Taught me how to launch instances via Terraform
 
